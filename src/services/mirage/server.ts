@@ -41,7 +41,7 @@ export const setupServer = (env?: string): Server => {
       server.create('user')
     },
 
-    routes (): void {
+    routes(): void {
       this.urlPrefix = 'https://fuerza.test'
 
       this.get('/journals/entries/:id', journal.getEntries)

@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useState } from 'react'
+/* eslint-disable multiline-ternary */
+import { createContext, ReactNode, useEffect, useState } from 'react'
 import http from '../services/api'
 import { AuthResponse } from '../services/mirage/routes/user'
 
@@ -16,6 +17,7 @@ interface AuthContextData {
   user: User
   isAuthenticated: boolean
   authenticate: (username: string, password: string) => void
+  addNewJournal: (journalId: string) => void
 }
 
 export const AuthContext = createContext({} as AuthContextData)
@@ -28,6 +30,10 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [user, setUser] = useState<User>(() => {
     return JSON.parse(sessionStorage.getItem('@Nocturnal:User') || 'null')
   })
+
+  useEffect(() => {
+    sessionStorage.setItem('@Nocturnal:User', JSON.stringify(user))
+  }, [user])
 
   async function authenticate(
     username: string,
@@ -50,11 +56,20 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
     setUser(authenticatedUser)
 
-    sessionStorage.setItem('@Nocturnal:User', JSON.stringify(authenticatedUser))
     sessionStorage.setItem('@Nocturnal:Token', (response as AuthResponse).token)
 
     setIsAuthenticated(true)
     return true
+  }
+
+  async function addNewJournal(journalId: string) {
+    setUser(oldUser => ({
+      id: oldUser.id,
+      username: oldUser.username,
+      journalIds: !oldUser.journalIds?.includes(journalId)
+        ? oldUser.journalIds?.concat([journalId]) || [journalId]
+        : oldUser.journalIds
+    }))
   }
 
   return (
@@ -62,7 +77,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       value={{
         user,
         isAuthenticated,
-        authenticate
+        authenticate,
+        addNewJournal
       }}
     >
       {children}

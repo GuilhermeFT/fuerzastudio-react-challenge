@@ -15,16 +15,21 @@ function Routes() {
         <Route path="/login" component={SignIn} />
         <Route path="/signup" component={SignUp} />
 
-        {/* Rotas de Listagem de Diários e de Notas */}
-        <PrivateRoute path="/my-journals" component={JournalList} />
-        <PrivateRoute path="/:journalId/notes" component={NoteList} />
+        {/* Rotas de criação/edição */}
+        <PrivateRoute path="/new/journal" component={CreateJournal} />
+        <PrivateRoute
+          path="/my-journals/:journalId/add"
+          component={CreateNote}
+        />
+
+        {/* Rotas de Listagem de Diários */}
+        <PrivateRoute exact path="/my-journals" component={JournalList} />
+
+        {/* Rotas de Listagem de Notas */}
+        <PrivateRoute path="/my-journals/:journalId/" component={NoteList} />
 
         {/* Rotas de visualização individual das Notas */}
         <PrivateRoute path="/:journalId/:noteId" component={NoteContent} />
-
-        {/* Rotas de criação/edição */}
-        <PrivateRoute path="/new/journal" component={CreateJournal} />
-        <PrivateRoute path="/new/note" component={CreateNote} />
       </Switch>
     </BrowserRouter>
   )
