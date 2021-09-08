@@ -31,9 +31,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     return JSON.parse(sessionStorage.getItem('@Nocturnal:User') || 'null')
   })
 
-  useEffect(() => {
-    sessionStorage.setItem('@Nocturnal:User', JSON.stringify(user))
-  }, [user])
+  useEffect(() => {}, [user])
 
   async function authenticate(
     username: string,
@@ -55,7 +53,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     }
 
     setUser(authenticatedUser)
-
+    sessionStorage.setItem('@Nocturnal:User', JSON.stringify(authenticatedUser))
     sessionStorage.setItem('@Nocturnal:Token', (response as AuthResponse).token)
 
     setIsAuthenticated(true)
@@ -63,13 +61,16 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }
 
   async function addNewJournal(journalId: string) {
-    setUser(oldUser => ({
-      id: oldUser.id,
-      username: oldUser.username,
-      journalIds: !oldUser.journalIds?.includes(journalId)
-        ? oldUser.journalIds?.concat([journalId]) || [journalId]
-        : oldUser.journalIds
-    }))
+    const updatedUser = {
+      id: user.id,
+      username: user.username,
+      journalIds: !user.journalIds?.includes(journalId)
+        ? user.journalIds?.concat([journalId]) || [journalId]
+        : user.journalIds
+    }
+
+    setUser(updatedUser)
+    sessionStorage.setItem('@Nocturnal:User', JSON.stringify(updatedUser))
   }
 
   return (
