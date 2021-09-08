@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App'
+import { AuthContextProvider } from './contexts/AuthContext'
+import Routes from './Routes'
 import { setupServer } from './services/mirage/server'
 
 if (process.env.NODE_ENV === 'development') {
@@ -9,7 +10,9 @@ if (process.env.NODE_ENV === 'development') {
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AuthContextProvider>
+      <Routes />
+    </AuthContextProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )
