@@ -1,5 +1,6 @@
 /* eslint-disable multiline-ternary */
-import { createContext, ReactNode, useEffect, useState } from 'react'
+import { createContext, ReactNode, useState } from 'react'
+
 import http from '../services/api'
 import { AuthResponse } from '../services/mirage/routes/user'
 
@@ -16,22 +17,20 @@ interface AuthContextProviderProps {
 interface AuthContextData {
   user: User
   isAuthenticated: boolean
-  authenticate: (username: string, password: string) => void
+  authenticate: (username: string, password: string) => Promise<boolean>
   addNewJournal: (journalId: string) => void
 }
 
 export const AuthContext = createContext({} as AuthContextData)
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     return sessionStorage.getItem('@Nocturnal:Token') !== null
   })
 
   const [user, setUser] = useState<User>(() => {
     return JSON.parse(sessionStorage.getItem('@Nocturnal:User') || 'null')
   })
-
-  useEffect(() => {}, [user])
 
   async function authenticate(
     username: string,

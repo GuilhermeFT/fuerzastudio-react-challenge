@@ -1,16 +1,33 @@
 .container {
-  margin: auto;
-
   font-weight: 600;
   color: var(--white);
 
   background-color: var(--brown);
 
   border: none;
-  padding: 1rem;
+  padding: 0.4rem 0.7rem;
+  min-height: 2.5rem;
 
   width: 100%;
   max-width: 260px;
 
   border-radius: 2rem;
+
+  transition: filter 0.2s;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+}
+
+.outline {
+  background-color: var(--background);
+  color: var(--brown);
+  border: 2px solid var(--brown);
+  width: max-content;
 }

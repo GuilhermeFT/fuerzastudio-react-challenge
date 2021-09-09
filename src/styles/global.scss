@@ -12,6 +12,9 @@
   --dark-gray: #333438;
   --white: #ffffff;
   --black: #000000;
+  --blue: #5091d6;
+  --light-blue: #b8e5e3;
+  --dark-blue: #3b4e8d;
 }
 
 body,
@@ -30,11 +33,12 @@ body {
 }
 
 #root {
-  padding: 1.4rem;
+  padding: 1rem;
 
   width: 100vw;
   height: 100vh;
 
+  gap: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -48,6 +52,22 @@ a {
 
 button {
   cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 @media (max-width: 1080px) {

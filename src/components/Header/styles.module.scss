@@ -1,0 +1,22 @@
+.headerContainer {
+  z-index: 10;
+
+  width: 100%;
+}
+
+.headerContent {
+  gap: 0.8rem;
+  display: flex;
+  padding: 2rem 0 6px;
+  max-width: 1078px;
+  margin: auto;
+
+  img {
+    max-width: 11rem;
+  }
+
+  button {
+    margin-left: auto;
+    max-width: 160px;
+  }
+}

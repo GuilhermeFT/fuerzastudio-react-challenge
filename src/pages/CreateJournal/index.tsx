@@ -1,10 +1,13 @@
 import { AxiosResponse } from 'axios'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { useHistory } from 'react-router'
+import { Button } from '../../components/Button'
 import { Header } from '../../components/Header'
 import { useAuth } from '../../hooks/useAuth'
 import { Journal } from '../../interfaces/journal.interface'
 import http from '../../services/api'
+
+import styles from './styles.module.scss'
 
 export function CreateJournal() {
   const history = useHistory()
@@ -29,24 +32,29 @@ export function CreateJournal() {
 
     const newJournal = (response as { journal: Journal }).journal
     addNewJournal(newJournal.id || '')
-    history.push(`/my-journals/${newJournal.id}`)
+    history.push('/my-journals')
   }
 
   return (
-    <main>
+    <>
       <Header />
-      <div>name</div>
-      <form onSubmit={handleOnSubmitForm}>
-        <input
-          type="text"
-          placeholder="Enter journal name"
-          value={journalName}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setJournalName(e.target.value)
-          }}
-        />
-        <button type="submit">Save Journal</button>
-      </form>
-    </main>
+      <main className={styles.container}>
+        <div>
+          <div />
+          <div>{journalName}</div>
+        </div>
+        <form onSubmit={handleOnSubmitForm}>
+          <input
+            type="text"
+            placeholder="Journal name"
+            value={journalName}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setJournalName(e.target.value)
+            }}
+          />
+          <Button type="submit">Save Journal</Button>
+        </form>
+      </main>
+    </>
   )
 }

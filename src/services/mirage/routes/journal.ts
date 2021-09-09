@@ -40,7 +40,6 @@ export const addEntry = (
   try {
     const journal = schema.journals.find(req.params.id)
     const { title, content } = JSON.parse(req.requestBody) as Partial<Entry>
-    console.log(journal)
     const now = dayjs().format()
     const entry = journal.createEntry({
       title,

@@ -1,8 +1,19 @@
+import { ReactNode } from 'react'
 import logoImg from '../../assets/images/logo.svg'
-export function Header() {
+
+import styles from './styles.module.scss'
+
+interface HeaderProps {
+  children?: ReactNode
+}
+
+export function Header({ children }: HeaderProps) {
   return (
-    <header>
-      <img src={logoImg} alt="Nocturnal logo" />
+    <header className={styles.headerContainer}>
+      <div className={styles.headerContent}>
+        <img src={logoImg} alt="Nocturnal logo" />
+        {children || null}
+      </div>
     </header>
   )
 }

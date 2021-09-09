@@ -7,6 +7,7 @@ import logoImg from '../../assets/images/logo.svg'
 
 import styles from './styles.module.scss'
 import { Button } from '../../components/Button'
+import { toast } from 'react-toastify'
 
 export function SignIn() {
   const { isAuthenticated, authenticate } = useAuth()
@@ -15,10 +16,23 @@ export function SignIn() {
   const [password, setPassword] = useState('')
 
   // Função responsável validar a autenticação após a submissão do formulário
-  function handleOnSubmitForm(e: FormEvent) {
+  async function handleOnSubmitForm(e: FormEvent) {
     e.preventDefault()
 
-    authenticate(username, password)
+    if (username === '' || password === '') {
+      if (username === '') {
+        toast.warning('username field is empty!')
+      }
+
+      if (password === '') {
+        toast.warning('password field is empty!')
+      }
+      return null
+    }
+
+    if (!(await authenticate(username, password))) {
+      toast.error('User not found!')
+    }
   }
 
   return !isAuthenticated ? (
@@ -51,7 +65,7 @@ export function SignIn() {
         >
           <input
             id="password"
-            type="text"
+            type="password"
             value={password}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setPassword(e.target.value)

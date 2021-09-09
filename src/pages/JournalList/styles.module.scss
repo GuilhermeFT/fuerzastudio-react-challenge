@@ -1,0 +1,142 @@
+.container {
+  flex: 1;
+  width: 100%;
+  max-width: 720px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  h1 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+}
+
+.emptyList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.6rem;
+
+  img {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  a {
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: underline;
+    color: var(--brown);
+  }
+}
+
+.list {
+  flex: 1;
+  overflow: auto;
+  width: 100%;
+  max-height: 550px;
+  list-style-type: none;
+
+  gap: 1rem;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: auto auto;
+
+  border-radius: 8px;
+  padding: 1rem;
+  a {
+    &:nth-child(odd) li {
+      background: var(--light-blue);
+    }
+    &:nth-child(even) li {
+      color: var(--white);
+      background: var(--dark-blue);
+    }
+  }
+
+  li {
+    font-family: 'Abhaya Libre', serif;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    border-radius: 2px 16px 16px 2px;
+    background-color: var(--background);
+    box-shadow: inset -2px -2px 2px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+
+    max-width: 110px;
+    width: 100%;
+    height: 150px;
+
+    div:first-child {
+      width: 11px;
+      background: var(--blue);
+      border-radius: 2px 0px 0px 2px;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+      height: 100%;
+    }
+
+    div:last-child {
+      flex: 1;
+      padding: 0.8rem;
+      text-align: center;
+      font-size: 1.1rem;
+      word-break: break-all;
+    }
+  }
+}
+
+.ldsRing {
+  margin: auto;
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.ldsRing div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid var(--brown);
+  border-radius: 50%;
+  animation: ldsRing 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: var(--brown) transparent transparent transparent;
+}
+.ldsRing div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.ldsRing div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.ldsRing div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes ldsRing {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (min-width: 720px) {
+  .container h1 {
+    text-align: left;
+  }
+  .list {
+    gap: 2rem;
+    grid-template-columns: repeat(4, auto);
+    background: rgba(255, 255, 255, 0.425);
+  }
+}
