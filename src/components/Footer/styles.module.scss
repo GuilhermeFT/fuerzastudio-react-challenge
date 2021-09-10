@@ -1,0 +1,25 @@
+.footerContainer {
+  width: 100%;
+}
+
+.footerContent {
+  gap: 0.8rem;
+  display: flex;
+  padding: 0.5rem;
+  max-width: 1078px;
+  margin: auto;
+
+  * {
+    margin: auto;
+  }
+}
+
+.logout {
+  font-size: 1rem;
+  background: transparent;
+  text-decoration: underline;
+  border: none;
+
+  font-weight: 600;
+  color: var(--brown);
+}

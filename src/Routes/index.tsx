@@ -2,6 +2,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { CreateJournal } from '../pages/CreateJournal'
 import { CreateNote } from '../pages/CreateNote'
 import { JournalList } from '../pages/JournalList'
+import { NoteContent } from '../pages/NoteContent'
 
 import { NoteList } from '../pages/NoteList'
 import { SignIn } from '../pages/SignIn'
@@ -23,10 +24,17 @@ function Routes() {
         <PrivateRoute exact path="/my-journals" component={JournalList} />
 
         {/* Rotas de Listagem de Notas */}
-        <PrivateRoute path="/my-journals/:journalId/" component={NoteList} />
+        <PrivateRoute
+          exact
+          component={NoteList}
+          path="/my-journals/:journalId/"
+        />
 
-        {/*  {/* Rotas de visualização individual das Notas
-        <PrivateRoute path="/:journalId/:noteId" component={NoteContent} /> */}
+        {/* Rotas de visualização individual das Notas */}
+        <PrivateRoute
+          path="/my-journals/:journalId/:noteId"
+          component={NoteContent}
+        />
       </Switch>
     </BrowserRouter>
   )

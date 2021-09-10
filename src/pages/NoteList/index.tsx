@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Redirect, useParams } from 'react-router'
+import { Redirect, useHistory, useParams } from 'react-router'
 import { toast } from 'react-toastify'
 import { Header } from '../../components/Header'
 import { Loader } from '../../components/Loader'
@@ -13,12 +13,16 @@ import meditateImg from '../../assets/images/meditate.svg'
 
 import styles from './styles.module.scss'
 import { Link } from 'react-router-dom'
+import { Footer } from '../../components/Footer'
+import { Button } from '../../components/Button'
+import { FaEdit } from 'react-icons/fa'
 
 type NoteListParams = {
   journalId: string
 }
 
 export function NoteList() {
+  const history = useHistory()
   const { user, logout } = useAuth()
   const { journalId } = useParams<NoteListParams>()
 
@@ -52,6 +56,10 @@ export function NoteList() {
     })
   }, [])
 
+  function handleOnClickEditJournalButton() {
+    history.push(`/new/journal/${journalId}?updateId=${journalId}`)
+  }
+
   return (
     <>
       <Header />
@@ -68,7 +76,10 @@ export function NoteList() {
               />
               <ul className={styles.list}>
                 {entries?.map(entry => (
-                  <Link key={entry.id} to={`/${entry.id}`}>
+                  <Link
+                    key={entry.id}
+                    to={`/my-journals/${journalId}/${entry.id}`}
+                  >
                     <li>{entry.title}</li>
                   </Link>
                 ))}
@@ -84,6 +95,13 @@ export function NoteList() {
           <Redirect to="/my-journals" />
         )}
       </main>
+
+      <Footer>
+        <Button outline type="button" onClick={handleOnClickEditJournalButton}>
+          <FaEdit />
+          Edit journal
+        </Button>
+      </Footer>
     </>
   )
 }

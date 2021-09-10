@@ -6,6 +6,8 @@ import { Header } from '../../components/Header'
 import { Loader } from '../../components/Loader'
 import { Navbar } from '../../components/Navbar'
 import { useAuth } from '../../hooks/useAuth'
+import { useQuery } from '../../hooks/useQuery'
+import { Entry } from '../../interfaces/entry.interface'
 import { Journal } from '../../interfaces/journal.interface'
 import http from '../../services/api'
 
@@ -16,6 +18,8 @@ type CreateNoteParams = {
 }
 
 export function CreateNote() {
+  let updateIdQuery = useQuery().get('updateId')
+
   const history = useHistory()
   const { user, logout } = useAuth()
   const { journalId } = useParams<CreateNoteParams>()
@@ -31,6 +35,21 @@ export function CreateNote() {
         toast.error('error fetching journals on create note!')
         logout()
         return null
+      }
+
+      if (updateIdQuery) {
+        http.get(`/journals/entries/${journalId}`).then((response: any) => {
+          if (response) {
+            const entry = (response.entries as Entry[]).filter(
+              entry => entry.id === updateIdQuery
+            )[0]
+
+            setNoteName(entry.title)
+            setContent(entry.content)
+          } else {
+            updateIdQuery = null
+          }
+        })
       }
 
       setJournal(
@@ -54,17 +73,31 @@ export function CreateNote() {
       return null
     }
 
-    const response: any = await http.post(`/journals/entry/${journalId}`, {
-      title: noteName,
-      content: content
-    })
+    if (!updateIdQuery) {
+      const response: any = await http.post(`/journals/entry/${journalId}`, {
+        title: noteName,
+        content: content
+      })
 
-    if (!response) {
-      toast.error('error creating note!')
-      return null
+      if (!response) {
+        toast.error('error creating note!')
+        return null
+      }
+
+      history.push(`/my-journals/${journalId}`)
+    } else {
+      const response: any = await http.put(`/journals/entry/${updateIdQuery}`, {
+        title: noteName,
+        content: content
+      })
+
+      if (!response) {
+        toast.error('error updating note!')
+        return null
+      }
+
+      history.push(`/my-journals/${journalId}/${updateIdQuery}`)
     }
-
-    history.push(`/my-journals/${journalId}`)
   }
 
   return (

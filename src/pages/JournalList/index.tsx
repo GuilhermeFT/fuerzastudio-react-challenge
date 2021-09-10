@@ -12,6 +12,7 @@ import meditateImg from '../../assets/images/meditate.svg'
 
 import styles from './styles.module.scss'
 import { Loader } from '../../components/Loader'
+import { Footer } from '../../components/Footer'
 
 export function JournalList() {
   const history = useHistory()
@@ -68,6 +69,8 @@ export function JournalList() {
           </div>
         )}
       </main>
+
+      <Footer />
     </>
   )
 }
