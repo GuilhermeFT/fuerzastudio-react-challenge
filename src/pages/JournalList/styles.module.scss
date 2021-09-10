@@ -6,16 +6,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+
+  height: 0;
 
   h1 {
     width: 100%;
     text-align: center;
-    margin-bottom: 1rem;
+    margin: 2rem 0;
   }
 }
 
 .emptyList {
+  margin: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,7 +38,6 @@
 }
 
 .list {
-  flex: 1;
   overflow: auto;
   width: 100%;
   max-height: 550px;
@@ -50,6 +51,10 @@
   border-radius: 8px;
   padding: 1rem;
   a {
+    width: 110px;
+    max-width: 120px;
+    height: fit-content;
+
     &:nth-child(odd) li {
       background: var(--light-blue);
     }
@@ -70,8 +75,6 @@
     box-shadow: inset -2px -2px 2px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 
-    max-width: 110px;
-    width: 100%;
     height: 150px;
 
     div:first-child {
@@ -90,43 +93,6 @@
       font-size: 1.1rem;
       word-break: break-all;
     }
-  }
-}
-
-.ldsRing {
-  margin: auto;
-  display: inline-block;
-  position: relative;
-  width: 80px;
-  height: 80px;
-}
-.ldsRing div {
-  box-sizing: border-box;
-  display: block;
-  position: absolute;
-  width: 64px;
-  height: 64px;
-  margin: 8px;
-  border: 8px solid var(--brown);
-  border-radius: 50%;
-  animation: ldsRing 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: var(--brown) transparent transparent transparent;
-}
-.ldsRing div:nth-child(1) {
-  animation-delay: -0.45s;
-}
-.ldsRing div:nth-child(2) {
-  animation-delay: -0.3s;
-}
-.ldsRing div:nth-child(3) {
-  animation-delay: -0.15s;
-}
-@keyframes ldsRing {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
   }
 }
 

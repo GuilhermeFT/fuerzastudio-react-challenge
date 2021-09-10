@@ -8,6 +8,7 @@ import logoImg from '../../assets/images/logo.svg'
 import styles from './styles.module.scss'
 import { Button } from '../../components/Button'
 import { toast } from 'react-toastify'
+import { Link } from 'react-router-dom'
 
 export function SignIn() {
   const { isAuthenticated, authenticate } = useAuth()
@@ -19,12 +20,12 @@ export function SignIn() {
   async function handleOnSubmitForm(e: FormEvent) {
     e.preventDefault()
 
-    if (username === '' || password === '') {
-      if (username === '') {
+    if (username.trim() === '' || password.trim() === '') {
+      if (username.trim() === '') {
         toast.warning('username field is empty!')
       }
 
-      if (password === '') {
+      if (password.trim() === '') {
         toast.warning('password field is empty!')
       }
       return null
@@ -39,7 +40,7 @@ export function SignIn() {
     <main className={styles.container}>
       <img src={logoImg} alt="Nocturnal logo" />
       <h1>Sign in</h1>
-      <a href="">Sign up</a>
+      <Link to="/signup">Sign up</Link>
 
       <form className={styles.formContent} onSubmit={handleOnSubmitForm}>
         <div

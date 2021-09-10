@@ -9,17 +9,20 @@ import http from '../../services/api'
 import { FaPlus } from 'react-icons/fa'
 
 import meditateImg from '../../assets/images/meditate.svg'
+
 import styles from './styles.module.scss'
+import { Loader } from '../../components/Loader'
 
 export function JournalList() {
-  const ristory = useHistory()
-  const { user } = useAuth()
+  const history = useHistory()
+  const { user, logout } = useAuth()
   const [journals, setJournals] = useState<Journal[]>()
 
   useEffect(() => {
     http.get(`/journals/${user.id}`).then((response: any) => {
       if (!response) {
         toast.error('error fetching journals')
+        logout()
         return null
       }
 
@@ -28,7 +31,7 @@ export function JournalList() {
   }, [])
 
   function handleOnAddJournalButtonClick() {
-    ristory.push('/new/journal')
+    history.push('/new/journal')
   }
 
   return (
@@ -40,14 +43,10 @@ export function JournalList() {
           </Button>
         )}
       </Header>
+
       <main className={styles.container}>
         {journals === undefined ? (
-          <div className={styles.ldsRing}>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
+          <Loader />
         ) : journals?.length !== 0 ? (
           <>
             <h1>Your Journals</h1>

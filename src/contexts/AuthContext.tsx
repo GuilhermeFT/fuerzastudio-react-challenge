@@ -18,7 +18,12 @@ interface AuthContextData {
   user: User
   isAuthenticated: boolean
   authenticate: (username: string, password: string) => Promise<boolean>
-  addNewJournal: (journalId: string) => void
+  newAccount: (
+    username: string,
+    password: string,
+    email?: string
+  ) => Promise<boolean>
+  logout: () => void
 }
 
 export const AuthContext = createContext({} as AuthContextData)
@@ -59,17 +64,42 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     return true
   }
 
-  async function addNewJournal(journalId: string) {
-    const updatedUser = {
-      id: user.id,
-      username: user.username,
-      journalIds: !user.journalIds?.includes(journalId)
-        ? user.journalIds?.concat([journalId]) || [journalId]
-        : user.journalIds
+  async function newAccount(
+    username: string,
+    password: string,
+    email?: string
+  ) {
+    console.log(username, password, email)
+    const response: any = await http.post('/auth/signup', {
+      username,
+      password,
+      email
+    })
+
+    if (!response) {
+      return false
     }
 
-    setUser(updatedUser)
-    sessionStorage.setItem('@Nocturnal:User', JSON.stringify(updatedUser))
+    const newUser = {
+      id: (response as AuthResponse).user.id,
+      username: (response as AuthResponse).user.username,
+      journalIds: (response as AuthResponse).user.journalIds
+    }
+
+    setUser(newUser)
+
+    sessionStorage.setItem('@Nocturnal:User', JSON.stringify(newUser))
+    sessionStorage.setItem('@Nocturnal:Token', (response as AuthResponse).token)
+
+    setIsAuthenticated(true)
+
+    return true
+  }
+
+  function logout() {
+    sessionStorage.removeItem('@Nocturnal:User')
+    sessionStorage.removeItem('@Nocturnal:Token')
+    setIsAuthenticated(false)
   }
 
   return (
@@ -78,7 +108,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         user,
         isAuthenticated,
         authenticate,
-        addNewJournal
+        newAccount,
+        logout
       }}
     >
       {children}

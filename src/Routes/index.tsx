@@ -2,7 +2,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { CreateJournal } from '../pages/CreateJournal'
 import { CreateNote } from '../pages/CreateNote'
 import { JournalList } from '../pages/JournalList'
-import { NoteContent } from '../pages/NoteContent'
+
 import { NoteList } from '../pages/NoteList'
 import { SignIn } from '../pages/SignIn'
 import { SignUp } from '../pages/SignUp'
@@ -17,10 +17,7 @@ function Routes() {
 
         {/* Rotas de criação/edição */}
         <PrivateRoute path="/new/journal" component={CreateJournal} />
-        <PrivateRoute
-          path="/my-journals/:journalId/add"
-          component={CreateNote}
-        />
+        <PrivateRoute path="/new/note/:journalId" component={CreateNote} />
 
         {/* Rotas de Listagem de Diários */}
         <PrivateRoute exact path="/my-journals" component={JournalList} />
@@ -28,8 +25,8 @@ function Routes() {
         {/* Rotas de Listagem de Notas */}
         <PrivateRoute path="/my-journals/:journalId/" component={NoteList} />
 
-        {/* Rotas de visualização individual das Notas */}
-        <PrivateRoute path="/:journalId/:noteId" component={NoteContent} />
+        {/*  {/* Rotas de visualização individual das Notas
+        <PrivateRoute path="/:journalId/:noteId" component={NoteContent} /> */}
       </Switch>
     </BrowserRouter>
   )
