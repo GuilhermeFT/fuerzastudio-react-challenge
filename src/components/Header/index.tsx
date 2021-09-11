@@ -14,6 +14,7 @@ export function Header({ children }: HeaderProps) {
   return (
     <header className={styles.headerContainer}>
       <div className={styles.headerContent}>
+        {/* Renderiza a logo com link diferente dependendo do estado do usuário. Se autenticado, ao clicar na logo do Header será redirecionado para a listagem de journals. Caso contrário, irá para a Home page */}
         {!isAuthenticated ? (
           <Link to="/">
             <img src={logoImg} alt="Nocturnal logo" />

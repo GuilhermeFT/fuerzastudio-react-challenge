@@ -22,12 +22,14 @@ type NoteContentParams = {
 
 export function NoteContent() {
   const history = useHistory()
-  const { user, logout } = useAuth()
-  const { journalId, noteId } = useParams<NoteContentParams>()
+  const { user, logout } = useAuth() // Hook de autenticação
+
+  const { journalId, noteId } = useParams<NoteContentParams>() // Coleta os parametros da rota da aplicação
 
   const [journal, setJournal] = useState<Journal>()
   const [entry, setEntry] = useState<Entry | null>()
 
+  // Responsável por buscar os dados do journal
   useEffect(() => {
     http.get(`/journals/${user.id}`).then((response: any) => {
       if (!response) {
@@ -44,6 +46,8 @@ export function NoteContent() {
     })
   }, [])
 
+  // Responsável por buscar as entries dentro da Journal requisitada acima
+  // So executa se journal o journal no ID especificado existir
   useEffect(() => {
     if (journal === null) {
       setEntry(null)
@@ -63,6 +67,7 @@ export function NoteContent() {
     }
   }, [journal])
 
+  // Função do botão de Edição da Entry renderizada em tela
   function handleOnClickEditNoteButton() {
     history.push(`/new/note/${journalId}?updateId=${entry?.id}`)
   }
@@ -76,15 +81,18 @@ export function NoteContent() {
           linkText="Back"
           linkToBackButton={`/my-journals/${journal?.id}`}
         />
+        {/* Enquanto journal ou entry estiverem indefinidas, exibiremos o Loader */}
         {journal === undefined || entry === undefined ? (
           <Loader />
         ) : journal && entry ? (
+          // Caso tenha o journal e a entry existente, exibimos o conteúdo da entry em tela
           <div className={styles.content}>
             <h1>{entry.title}</h1>
 
             <p>{entry.content}</p>
           </div>
         ) : (
+          // Caso contrário, voltamos o usuário para lista de Journal
           <Redirect to="/my-journals" />
         )}
       </main>

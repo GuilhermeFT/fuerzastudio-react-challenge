@@ -18,17 +18,19 @@ type CreateNoteParams = {
 }
 
 export function CreateNote() {
-  let updateIdQuery = useQuery().get('updateId')
+  let updateIdQuery = useQuery().get('updateId') // Coleta da URL parametros desejados
 
   const history = useHistory()
-  const { user, logout } = useAuth()
-  const { journalId } = useParams<CreateNoteParams>()
+
+  const { user, logout } = useAuth() // Hook de autenticação
+
+  const { journalId } = useParams<CreateNoteParams>() // Coleta os parametros da página colocados na rota
 
   const [noteName, setNoteName] = useState('')
   const [content, setContent] = useState('')
-
   const [journal, setJournal] = useState<Journal>()
 
+  // Responsável por buscar os dados do journal para conferir se o journal existe
   useEffect(() => {
     http.get(`/journals/${user.id}`).then((response: any) => {
       if (!response) {
@@ -37,6 +39,7 @@ export function CreateNote() {
         return null
       }
 
+      // Se updateIdQuery estiver com dados reais, iremos buscar os dados referente a esse entry e preenchê-los nos campos
       if (updateIdQuery) {
         http.get(`/journals/entries/${journalId}`).then((response: any) => {
           if (response) {
@@ -47,11 +50,14 @@ export function CreateNote() {
             setNoteName(entry.title)
             setContent(entry.content)
           } else {
+            /* Caso não exista esse dado, setamos null à variável updateIdQuery
+          para evitar uma requisição errada no submit do formulário */
             updateIdQuery = null
           }
         })
       }
 
+      /* Caso exista, selecionamos o journal com o ID igual ao que está sendo passado pela Rota da aplicação colatada pelo useParams */
       setJournal(
         response.journals.filter(
           (journal: Journal) => journal.id === journalId
@@ -60,8 +66,11 @@ export function CreateNote() {
     })
   }, [])
 
+  // Função responsável validar a a criação ou edição de um novo note
   async function handleOnSubmitForm(e: FormEvent) {
     e.preventDefault()
+
+    // Verificação de campos do formulário
     if (noteName.trim() === '' || content.trim() === '') {
       if (noteName.trim() === '') {
         toast.warning('Name field is empty!')
@@ -73,6 +82,7 @@ export function CreateNote() {
       return null
     }
 
+    // Caso updateIdQuery seja null, iremos usar a rota de criação
     if (!updateIdQuery) {
       const response: any = await http.post(`/journals/entry/${journalId}`, {
         title: noteName,
@@ -86,6 +96,7 @@ export function CreateNote() {
 
       history.push(`/my-journals/${journalId}`)
     } else {
+      // Caso updateIdQuery seja diferente de null, iremos usar a rota de atualização
       const response: any = await http.put(`/journals/entry/${updateIdQuery}`, {
         title: noteName,
         content: content
@@ -104,9 +115,11 @@ export function CreateNote() {
     <>
       <Header />
       <main className={styles.container}>
+        {/* Exibe um Loader enquanto os dados do journal é buscado */}
         {journal === undefined ? (
           <Loader />
         ) : journal !== null ? (
+          /* Caso o journal existir, exibimos os componentes de formulario para o usuário */
           <>
             <Navbar
               disableButton
@@ -133,6 +146,7 @@ export function CreateNote() {
             </form>
           </>
         ) : (
+          /* Caso o journal não existir (journal == null), retornaremos para a listagem de journal do usuário */
           <Redirect to="/my-journals" />
         )}
       </main>

@@ -23,12 +23,15 @@ type NoteListParams = {
 
 export function NoteList() {
   const history = useHistory()
-  const { user, logout } = useAuth()
-  const { journalId } = useParams<NoteListParams>()
+
+  const { user, logout } = useAuth() // Hook de autenticação
+
+  const { journalId } = useParams<NoteListParams>() // Coleta os parametros da Rota da aplicação
 
   const [journal, setJournal] = useState<Journal>()
   const [entries, setEntries] = useState<Entry[]>()
 
+  // Coleta os dados da Journal do ID passado por parametro na rota
   useEffect(() => {
     http.get(`/journals/${user.id}`).then((response: any) => {
       if (!response) {
@@ -37,6 +40,7 @@ export function NoteList() {
         return null
       }
 
+      /* Caso exista, selecionamos o journal com o ID igual ao que está sendo passado pela Rota da aplicação colatada pelo useParams */
       setJournal(
         response.journals.filter(
           (journal: Journal) => journal.id === journalId
@@ -45,6 +49,7 @@ export function NoteList() {
     })
   }, [])
 
+  // Coleta as entries existentes no journal requisitado
   useEffect(() => {
     http.get(`/journals/entries/${journalId}`).then((response: any) => {
       if (!response) {
@@ -56,6 +61,7 @@ export function NoteList() {
     })
   }, [])
 
+  // Responsável pelo botão de edição no rodapé da aplicação
   function handleOnClickEditJournalButton() {
     history.push(`/new/journal/${journalId}?updateId=${journalId}`)
   }
@@ -64,10 +70,12 @@ export function NoteList() {
     <>
       <Header />
       <main className={styles.container}>
+        {/* Exibe um Loader enquanto os dados do journal é buscado */}
         {journal === undefined ? (
           <Loader />
         ) : journal !== null ? (
           entries?.length !== 0 ? (
+            // Caso exista o journal e tenha entries cadastrados nele, exibimos a lista de Entries
             <>
               <Navbar
                 linkText={journal.title}
@@ -86,12 +94,14 @@ export function NoteList() {
               </ul>
             </>
           ) : (
+            // Se não tiver alguma entry, exibimos o convite a criar um Novo
             <div className={styles.emptyList}>
               <img src={meditateImg} alt="" />
               <Link to={`/new/note/${journalId}`}>Create a note</Link>
             </div>
           )
         ) : (
+          // Se o journal não existir, voltamos o usuário para a listagem de Journal
           <Redirect to="/my-journals" />
         )}
       </main>

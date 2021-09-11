@@ -16,9 +16,12 @@ import { Footer } from '../../components/Footer'
 
 export function JournalList() {
   const history = useHistory()
-  const { user, logout } = useAuth()
+
+  const { user, logout } = useAuth() // Hook de autenticação
+
   const [journals, setJournals] = useState<Journal[]>()
 
+  // Buscamos os journals do usuário para exibir em tela
   useEffect(() => {
     http.get(`/journals/${user.id}`).then((response: any) => {
       if (!response) {
@@ -31,6 +34,7 @@ export function JournalList() {
     })
   }, [])
 
+  // Função do botão de Adição de Journal no Header da aplicação que só é exibido quando há pelo menos 1 journal listado
   function handleOnAddJournalButtonClick() {
     history.push('/new/journal')
   }
@@ -38,6 +42,7 @@ export function JournalList() {
   return (
     <>
       <Header>
+        {/* Verifica se há pelo menos 1 journal para rendereizar o botão de Adição de Journal no Header */}
         {(journals?.length || 0) > 0 && (
           <Button outline onClick={handleOnAddJournalButtonClick}>
             <FaPlus /> Add Journal
@@ -46,9 +51,11 @@ export function JournalList() {
       </Header>
 
       <main className={styles.container}>
+        {/* Exibe um Loader enquanto os dados do journal é buscado */}
         {journals === undefined ? (
           <Loader />
         ) : journals?.length !== 0 ? (
+          // Caso tenha algum dado, renderizamos a listagem de Journals em tela
           <>
             <h1>Your Journals</h1>
             <ul className={styles.list}>
@@ -63,6 +70,7 @@ export function JournalList() {
             </ul>
           </>
         ) : (
+          // Caso não tenha dados, renderizamos um convite a criar um journal para o usuário
           <div className={styles.emptyList}>
             <img src={meditateImg} alt="" />
             <Link to="/new/journal">Create a journal</Link>

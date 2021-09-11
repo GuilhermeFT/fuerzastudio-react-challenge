@@ -10,6 +10,7 @@ interface NavbarProps {
   disableButton?: boolean
 }
 
+// Navbar é um componente que fornece alguns recursos de navegação dentro de algumas telas da aplicação, como botão de voltar, botões de adição e etc
 export function Navbar({
   linkToBackButton,
   linkText,

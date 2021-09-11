@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { Redirect } from 'react-router'
+import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import logoImg from '../../assets/images/logo.svg'
 import { Button } from '../../components/Button'
@@ -17,6 +18,7 @@ export function SignUp() {
   async function handleOnSubmitForm(e: FormEvent) {
     e.preventDefault()
 
+    // Verifica se há informações nos inputs de username e password válidas
     if (username.trim() === '' || password.trim() === '') {
       if (username.trim() === '') {
         toast.warning('username field is empty!')
@@ -28,16 +30,22 @@ export function SignUp() {
       return null
     }
 
+    // Caso esteja tudo certo com os inputs, passamos os dados para a função newAccount do nosso AuthContext
     if (!(await newAccount(username, password, email))) {
-      toast.error('Error on create account!')
+      toast.error('Error on create account. Try other username!')
     }
   }
 
+  // Renderiza esta tela somente se o usuário não estiver authenticado. Caso contrário, o redirecionamos para listagem de Journals
   return !isAuthenticated ? (
     <main className={styles.container}>
-      <img src={logoImg} alt="Nocturnal logo" />
+      <Link to="/">
+        <img src={logoImg} alt="Nocturnal logo" />
+      </Link>
       <h1>Sign up</h1>
-      <a href="">Already have an account</a>
+      <Link className={styles.signin} to="/login">
+        Already have an account
+      </Link>
 
       <form className={styles.formContent} onSubmit={handleOnSubmitForm}>
         <div

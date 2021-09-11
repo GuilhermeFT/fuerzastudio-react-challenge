@@ -11,7 +11,7 @@ import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 
 export function SignIn() {
-  const { isAuthenticated, authenticate } = useAuth()
+  const { isAuthenticated, authenticate } = useAuth() // Hook de autenticação
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -20,6 +20,7 @@ export function SignIn() {
   async function handleOnSubmitForm(e: FormEvent) {
     e.preventDefault()
 
+    // Verifica se há informações nos inputs de username e password válidas
     if (username.trim() === '' || password.trim() === '') {
       if (username.trim() === '') {
         toast.warning('username field is empty!')
@@ -31,16 +32,22 @@ export function SignIn() {
       return null
     }
 
+    // Caso esteja tudo certo com os inputs, passamos os dados para a função autenticate do nosso AuthContext
     if (!(await authenticate(username, password))) {
       toast.error('User not found!')
     }
   }
 
+  // Renderiza esta tela somente se o usuário não estiver authenticado. Caso contrário, o redirecionamos para listagem de Journals
   return !isAuthenticated ? (
     <main className={styles.container}>
-      <img src={logoImg} alt="Nocturnal logo" />
+      <Link to="/">
+        <img src={logoImg} alt="Nocturnal logo" />
+      </Link>
       <h1>Sign in</h1>
-      <Link to="/signup">Sign up</Link>
+      <Link className={styles.signup} to="/signup">
+        Sign up
+      </Link>
 
       <form className={styles.formContent} onSubmit={handleOnSubmitForm}>
         <div
@@ -76,7 +83,6 @@ export function SignIn() {
             Your password
           </label>
         </div>
-        <a href="">Forgot password?</a>
 
         <Button type="submit">Log In</Button>
       </form>

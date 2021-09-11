@@ -1,6 +1,7 @@
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { CreateJournal } from '../pages/CreateJournal'
 import { CreateNote } from '../pages/CreateNote'
+import { HomePage } from '../pages/HomePage'
 import { JournalList } from '../pages/JournalList'
 import { NoteContent } from '../pages/NoteContent'
 
@@ -13,9 +14,12 @@ function Routes() {
   return (
     <BrowserRouter>
       <Switch>
+        {/* Rotas Públicas (não precisam de autenticação) */}
+        <Route exact path="/" component={HomePage} />
         <Route path="/login" component={SignIn} />
         <Route path="/signup" component={SignUp} />
 
+        {/* Rotas Protegidas (precisam de Autenticação) */}
         {/* Rotas de criação/edição */}
         <PrivateRoute path="/new/journal" component={CreateJournal} />
         <PrivateRoute path="/new/note/:journalId" component={CreateNote} />
@@ -30,7 +34,7 @@ function Routes() {
           path="/my-journals/:journalId/"
         />
 
-        {/* Rotas de visualização individual das Notas */}
+        {/* Rotas de visualização das Notas */}
         <PrivateRoute
           path="/my-journals/:journalId/:noteId"
           component={NoteContent}
