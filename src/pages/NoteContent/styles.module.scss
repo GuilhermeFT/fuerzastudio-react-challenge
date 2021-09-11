@@ -21,6 +21,8 @@
   h1 {
     margin: 1rem 0;
     text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   p {

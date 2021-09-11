@@ -26,7 +26,7 @@ export function Navbar({
     <nav className={styles.container}>
       <Link to={linkToBackButton}>
         <FaAngleLeft />
-        {linkText}
+        <div>{linkText}</div>
       </Link>
       {!disableButton && (
         <Button outline onClick={handleOnAddNoteButtonClick}>

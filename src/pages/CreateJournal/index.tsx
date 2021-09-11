@@ -87,7 +87,9 @@ export function CreateJournal() {
       <main className={styles.container}>
         <div>
           <div />
-          <div>{journalName}</div>
+          <div>
+            <p>{journalName}</p>
+          </div>
         </div>
 
         <form onSubmit={handleOnSubmitForm}>

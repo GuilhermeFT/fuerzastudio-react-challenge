@@ -11,6 +11,13 @@
     align-items: center;
     justify-content: center;
 
+    div {
+      width: 100px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     svg {
       width: 22px;
       height: 22px;
