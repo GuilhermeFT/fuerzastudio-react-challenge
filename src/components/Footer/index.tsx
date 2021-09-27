@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { useAuth } from '../../hooks/useAuth'
+
 import styles from './styles.module.scss'
 
 interface FooterProps {
@@ -7,15 +7,9 @@ interface FooterProps {
 }
 
 export function Footer({ children }: FooterProps) {
-  const { logout } = useAuth()
   return (
     <footer className={styles.footerContainer}>
-      <div className={styles.footerContent}>
-        {children}
-        <button className={styles.logout} type="button" onClick={logout}>
-          Log Out
-        </button>
-      </div>
+      <div className={styles.footerContent}>{children}</div>
     </footer>
   )
 }

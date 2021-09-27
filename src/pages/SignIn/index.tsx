@@ -84,6 +84,8 @@ export function SignIn() {
           </label>
         </div>
 
+        <a href="">Forgot Password?</a>
+
         <Button type="submit">Log In</Button>
       </form>
     </main>

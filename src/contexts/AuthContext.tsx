@@ -102,21 +102,6 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       return false
     }
 
-    // Caso dê tudo certo, salvaremos esse usuário nos states da aplicação e também na sessionStorage
-    const newUser = {
-      id: (response as AuthResponse).user.id,
-      username: (response as AuthResponse).user.username,
-      journalIds: (response as AuthResponse).user.journalIds
-    }
-
-    setUser(newUser)
-
-    sessionStorage.setItem('@Nocturnal:User', JSON.stringify(newUser))
-    sessionStorage.setItem('@Nocturnal:Token', (response as AuthResponse).token)
-
-    // Mudamos o estado para Mudarmos o comportamento da aplicação
-    setIsAuthenticated(true)
-
     // Envia uma confirmação de que tudo deu certo
     return true
   }

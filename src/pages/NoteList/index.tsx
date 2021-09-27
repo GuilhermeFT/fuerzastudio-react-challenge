@@ -88,7 +88,9 @@ export function NoteList() {
                     key={entry.id}
                     to={`/my-journals/${journalId}/${entry.id}`}
                   >
-                    <li>{entry.title}</li>
+                    <li>
+                      <div>{entry.title}</div>
+                    </li>
                   </Link>
                 ))}
               </ul>

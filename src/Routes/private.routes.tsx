@@ -7,7 +7,7 @@ function PrivateRoute({ ...rest }: RouteProps) {
   const { isAuthenticated } = useAuth()
 
   // Caso não tenha um login efetuado, o usuário é redirecionado para a página de Login
-  return isAuthenticated ? <Route {...rest} /> : <Redirect to="/login" />
+  return isAuthenticated ? <Route {...rest} /> : <Redirect to="/" />
 }
 
 export default PrivateRoute

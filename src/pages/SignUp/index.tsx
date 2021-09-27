@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from 'react'
-import { Redirect } from 'react-router'
+import { Redirect, useHistory } from 'react-router'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import logoImg from '../../assets/images/logo.svg'
@@ -9,6 +9,7 @@ import { useAuth } from '../../hooks/useAuth'
 import styles from './styles.module.scss'
 
 export function SignUp() {
+  const history = useHistory()
   const { isAuthenticated, newAccount } = useAuth()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -33,6 +34,9 @@ export function SignUp() {
     // Caso esteja tudo certo com os inputs, passamos os dados para a função newAccount do nosso AuthContext
     if (!(await newAccount(username, password, email))) {
       toast.error('Error on create account. Try other username!')
+    } else {
+      toast.success('account created successfully!')
+      history.push('/') // Volta para a listagem após concluir a requisição
     }
   }
 
@@ -43,7 +47,7 @@ export function SignUp() {
         <img src={logoImg} alt="Nocturnal logo" />
       </Link>
       <h1>Sign up</h1>
-      <Link className={styles.signin} to="/login">
+      <Link className={styles.signin} to="/">
         Already have an account
       </Link>
 
